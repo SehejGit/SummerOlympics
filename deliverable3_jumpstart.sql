@@ -69,20 +69,10 @@ CREATE TABLE datasets.name_basics(
 5. Perform data wrangling by writing SELECT statements to 
 create a result set suitable for each of your database tables.
 */
-SELECT nconst,
-	substring(primaryName
-				  ,1
-				  ,CASE WHEN position(' ' IN primaryName)=0 
-			  			THEN length(primaryName) 
-			  			ELSE position(' ' IN primaryName)-1 
-			  		END
-				 ) as fname,
-	substring(primaryName,position(' ' IN primaryName)+1,length(primaryName)) as lname,
-	primaryName,
-	birthYear,
-	deathYear
-FROM datasets.name_basics
-LIMIT 10;
+INSERT INTO PUBLIC.OLYMPICS(
+    SELECT year, city
+    FROM DATASETS.CLEAN
+);
 
 /*
 6. To fill in your designed and created tables, write INSERT statements that 
