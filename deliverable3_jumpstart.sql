@@ -12,15 +12,17 @@ Also, make sure your code specifies PK and FK constraints.
 If you choose BigQuery, you need to comment out the PK/FK constraint specifications.
 */
 CREATE TABLE Athlete (
-    athlete_id INT PRIMARY KEY,
+    athlete_id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100),
     gender VARCHAR(20),
     country_code VARCHAR(20),
     country VARCHAR(100)
 );
 
+DROP TABLE ATHLETE;
+
 CREATE TABLE Competition (
-    event_id INT PRIMARY KEY,
+    event_id VARCHAR(36) PRIMARY KEY,
     sport VARCHAR(50),
     discipline VARCHAR(50),
     event VARCHAR(100),
@@ -33,17 +35,17 @@ CREATE TABLE Olympics (
 );
 
 CREATE TABLE Won (
-    won_id INT PRIMARY KEY,
-    athlete_id INT,
-    event_id INT,
+    won_id VARCHAR(36) PRIMARY KEY,
+    athlete_id VARCHAR(36),
+    event_id VARCHAR(36),
     medal VARCHAR(20),
     FOREIGN KEY (athlete_id) REFERENCES Athlete(athlete_id),
     FOREIGN KEY (event_id) REFERENCES Competition(event_id)
 );
 
 CREATE TABLE Are_Held (
-    held_id INT PRIMARY KEY,
-    event_id INT,
+    held_id VARCHAR(36) PRIMARY KEY,
+    event_id VARCHAR(36),
     olympic_year SMALLINT,
     FOREIGN KEY (event_id) REFERENCES Competition(event_id),
     FOREIGN KEY (olympic_year) REFERENCES Olympics(olympic_year)
@@ -72,6 +74,9 @@ create a result set suitable for each of your database tables.
 SELECT year, city
 FROM DATASETS.CLEAN;
 
+SELECT UUID_STRING(), athlete as name, gender, country_code, country
+FROM DATASETS.CLEAN;
+
 /*
 6. To fill in your designed and created tables, write INSERT statements that 
 take in the above SELECT statements.
@@ -80,6 +85,10 @@ INSERT INTO PUBLIC.OLYMPICS(
     SELECT year, city
     FROM DATASETS.CLEAN
 );
+
+INSERT INTO PUBLIC.ATHLETE (athlete_id, name, gender, country_code, country)
+SELECT UUID_STRING(), athlete as name, gender, country_code, country
+FROM DATASETS.CLEAN;
 
 /*
 7. Finally query each filled table by writing a SELECT * FROM Table_Name LIMIT 10 . Take screenshots of your query and returned results. Use this templateLinks to an external site. to save your screenshots into a file. Download a .pdf version of the completed file. Please make sure to include a snapshot of your ERD diagram. Feel free to enhance and update your previously submitted ERD diagram.
